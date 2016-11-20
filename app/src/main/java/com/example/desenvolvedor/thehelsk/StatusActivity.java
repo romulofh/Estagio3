@@ -48,7 +48,7 @@ public class StatusActivity extends AppCompatActivity {
         myEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(activity, MyEventsActivity.class);
+                intent = new Intent(activity, EventsActivity.class);
                 startActivity(intent);
             }
         });
