@@ -21,6 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,10 +69,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 person.setNome((((EditText)findViewById(R.id.person_name)).getText()).toString());
                 person.setSobrenome((((EditText)findViewById(R.id.person_surname)).getText()).toString());
-
-
-
-
                 user.setEmail((((EditText)findViewById(R.id.user_email)).getText()).toString());
                 user.setPassword((((EditText)findViewById(R.id.user_password)).getText()).toString());
 
@@ -77,6 +76,23 @@ public class SignInActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
+                                    try {
+                                        JSONObject pessoaJson = new JSONObject(response);
+                                        if (pessoaJson.has("message")) {
+                                            Log.i("mensagem", "email ou senha inválida");
+                                        } else {
+                                            person.setId(pessoaJson.getInt("id"));
+                                            person.setNome(pessoaJson.getString("nome"));
+                                            person.setSobrenome(pessoaJson.getString("sobrenome"));
+
+                                            intent = new Intent(activity, StatusActivity.class);
+                                            intent.putExtra("person", person);
+                                            startActivity(intent);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 // response
                                 nextActivity = true;
                                 Log.d("Response", response);

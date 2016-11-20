@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity{
 
 
                                         intent = new Intent(activity, HelloActivity.class);
-                                        intent.putExtra("person", person);
+                                        intent.putExtra("pessoa", person);
                                         startActivity(intent);
                                     }
                                 } catch (JSONException e) {
