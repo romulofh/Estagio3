@@ -20,8 +20,9 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".HelloActivity" />
         <activity android:name=".EventsActivity" />
-        <activity android:name=".MyEventsActivity" />
-        <activity android:name=".StatusActivity"></activity>
+        <activity android:name=".StatusActivity" />
+        <activity android:name=".MyEventsDetailsActivity" />
+        <activity android:name=".EventsDetailsActivity"></activity>
     </application>
 
 </manifest>

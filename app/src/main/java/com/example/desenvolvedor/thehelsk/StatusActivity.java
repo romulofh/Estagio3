@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import Model.Pessoa;
 
@@ -24,11 +27,16 @@ public class StatusActivity extends AppCompatActivity {
         intent = getIntent();
         pessoa = (Pessoa)intent.getSerializableExtra("pessoa");
 
+        TextView my_name = (TextView)findViewById(R.id.my_name);
+
+        if (my_name != null) {
+            my_name.setText(pessoa.getNome() + pessoa.getSobrenome());
+        }
+
         Button events = (Button)findViewById(R.id.button_events);
         Button  myEvents = (Button)findViewById(R.id.button_my_events);
 
         intent.putExtra("pessoa", pessoa);
-
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

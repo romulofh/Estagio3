@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity{
                                         person.setSobrenome(personJson.getString("sobrenome"));
 
 
-                                        intent = new Intent(activity, HelloActivity.class);
+                                        intent = new Intent(activity, StatusActivity.class);
                                         intent.putExtra("pessoa", person);
                                         startActivity(intent);
                                     }
