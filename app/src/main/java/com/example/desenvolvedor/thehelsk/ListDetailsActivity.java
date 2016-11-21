@@ -44,7 +44,7 @@ public class ListDetailsActivity extends AppCompatActivity {
         pessoa = (Pessoa) intent.getSerializableExtra("pessoa");
         event = (Event) intent.getSerializableExtra("event");
         eventList = (EventList) intent.getSerializableExtra("eventList");
-        url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/lists/event/" + event.getId(); //????
+        url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/lista_pessoas/";
         queue = Volley.newRequestQueue(activity);
         Button cancel = (Button) findViewById(R.id.cancel_button);
         cancel.setOnClickListener(new View.OnClickListener() {

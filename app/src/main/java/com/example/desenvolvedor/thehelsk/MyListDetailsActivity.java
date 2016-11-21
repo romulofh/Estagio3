@@ -39,11 +39,14 @@ public class MyListDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_list_details);
 
+        intent = getIntent();
+        eventList = (EventList)intent.getSerializableExtra("eventList");
+        pessoa = (Pessoa)intent.getSerializableExtra("pessoa");
         activity = this;
         /*
         * PREENCHER OS CAMPOS DA TELA COM OS DADOS DA LISTA
         * */
-        String url = "";
+        String url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/eventos/lista/" + eventList.getEvent_id();
         new DownloadJsonAsyncTask()
                 .execute(url);
     }

@@ -60,9 +60,9 @@ public class EventListsActivity extends ListActivity {
         activity = this;
 
         if (myLists){
-            // url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/" + pessoa.getId();
+            url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/lists/pessoa/" + pessoa.getId();
         } else {
-            // url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/";
+            url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/lists/evento/" + event.getId();
         }
 
         new DownloadJsonAsyncTask()
