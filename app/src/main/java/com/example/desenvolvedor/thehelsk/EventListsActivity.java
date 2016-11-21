@@ -3,9 +3,11 @@ package com.example.desenvolvedor.thehelsk;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,26 +32,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Event;
+import Model.EventList;
 import Model.Pessoa;
 
-public class EventsActivity extends ListActivity {
+public class EventListsActivity extends ListActivity {
 
-    Button cancel;
     Activity activity;
     Intent intent = new Intent();
     Pessoa pessoa = new Pessoa();
+    Event event = new Event();
+    EventList eventList = new EventList();
+    boolean myLists;
+    String url;
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         intent = getIntent();
         pessoa = (Pessoa)intent.getSerializableExtra("pessoa");
+        event = (Event)intent.getSerializableExtra("event");
+        if (intent.getExtras().containsKey("boolean")) {
+            myLists = intent.getExtras().getBoolean("boolean");
+        } else {
+            myLists = false;
+        }
+
         activity = this;
 
-        String url;
-
-        url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/eventos.json";
-
+        if (myLists){
+            // url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/" + pessoa.getId();
+        } else {
+            // url = "https://thehelsk-romulofurtadoo548139.codeanyapp.com/";
+        }
 
         new DownloadJsonAsyncTask()
                 .execute(url);
@@ -58,10 +72,13 @@ public class EventsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Event event = (Event)getListAdapter().getItem(position);
-        intent.putExtra("pessoa",pessoa);
-        intent.putExtra("event",event);
-        startActivity(intent);
+        eventList = (EventList)getListAdapter().getItem(position);
+        if (myLists){
+            nextActivity(MyListDetailsActivity.class);
+        } else {
+
+            nextActivity(ListDetailsActivity.class);
+        }
     }
 
     private String getStringFromInputStream(InputStream is) {
@@ -92,12 +109,12 @@ public class EventsActivity extends ListActivity {
         return sb.toString();
 
     }
-    class DownloadJsonAsyncTask extends AsyncTask<String, Void, List<Event>> {
+    class DownloadJsonAsyncTask extends AsyncTask<String, Void, List<EventList>> {
 
         ProgressDialog dialog;
 
         @Override
-        protected List<Event> doInBackground(String... params) {
+        protected List<EventList> doInBackground(String... params) {
             String urlString = params[0];
             HttpClient httpclient = new DefaultHttpClient();
             HttpGet httpget = new HttpGet(urlString);
@@ -109,8 +126,8 @@ public class EventsActivity extends ListActivity {
                     InputStream instream = entity.getContent();
                     String json = getStringFromInputStream(instream);
                     instream.close();
-                    List<Event> events = getEvent(json);
-                    return events;
+                    List<EventList> eventLists = getEventList(json);
+                    return eventLists;
                 }
             } catch (Exception e) {
                 Log.e("Erro", "Falha ao acessar Web service", e);
@@ -119,32 +136,33 @@ public class EventsActivity extends ListActivity {
         }
 
 
-        private List<Event> getEvent(String jsonString) {
-            List<Event> events = new ArrayList<Event>();
+        private List<EventList> getEventList(String jsonString) {
+            List<EventList> eventsLists = new ArrayList<EventList>();
             try {
-                JSONArray eventsJson = new JSONArray(jsonString);
-                JSONObject eventJson;
-                for (int i = 0; i < eventsJson.length(); i++) {
-                    eventJson = new JSONObject(eventsJson.getString(i));
+                JSONArray eventListsJson = new JSONArray(jsonString);
+                JSONObject eventListJson;
+                for (int i = 0; i < eventListsJson.length(); i++) {
+                    eventListJson = new JSONObject(eventListsJson.getString(i));
 
-                    Event objectEvent = new Event();
-                    objectEvent.setId(Integer.parseInt(eventJson.getString("id")));
-                    objectEvent.setNome(eventJson.getString("nome"));
-                    objectEvent.setEstabelecimento_id(Integer.parseInt(eventJson.getString("estabelecimento_id")));
-                    events.add(objectEvent);
+                    EventList objectEventList = new EventList();
+                    objectEventList.setId(Integer.parseInt(eventListJson.getString("id")));
+                    objectEventList.setDescricao(eventListJson.getString("descricao"));
+                    objectEventList.setNome(eventListJson.getString("nome"));
+                    objectEventList.setEvent_id(event.getId());
+                    eventsLists.add(objectEventList);
                 }
             } catch (JSONException e) {
                 Log.e("Erro", "Erro no parsing do JSON", e);
             }
-            return events;
+            return eventsLists;
         }
 
         @Override
-        protected void onPostExecute(List<Event> result) {
+        protected void onPostExecute(List<EventList> result) {
 
             super.onPostExecute(result);
             if (result.size() > 0) {
-                ArrayAdapter<Event> adapter = new ArrayAdapter<Event>(activity, android.R.layout.simple_list_item_1, result);setListAdapter(adapter);
+                ArrayAdapter<EventList> adapter = new ArrayAdapter<EventList>(activity, android.R.layout.simple_list_item_1, result);setListAdapter(adapter);
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         activity)
@@ -162,4 +180,13 @@ public class EventsActivity extends ListActivity {
         }
 
     }
+    private void nextActivity(Class nextActivity){
+        Intent intent = new Intent(this, nextActivity);
+
+        intent.putExtra("pessoa",pessoa);
+        intent.putExtra("event",event);
+        intent.putExtra("eventList",eventList);
+        startActivity(intent);
+    };
 }
+

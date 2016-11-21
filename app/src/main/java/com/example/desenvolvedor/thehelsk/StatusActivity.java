@@ -17,6 +17,7 @@ public class StatusActivity extends AppCompatActivity {
     Intent intent;
     Pessoa pessoa;
     Activity activity;
+    boolean myLists;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,23 +35,31 @@ public class StatusActivity extends AppCompatActivity {
         }
 
         Button events = (Button)findViewById(R.id.button_events);
-        Button  myEvents = (Button)findViewById(R.id.button_my_events);
+        Button  myLists = (Button)findViewById(R.id.button_my_events);
 
-        intent.putExtra("pessoa", pessoa);
+
+
         events.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(activity, EventsActivity.class);
-                startActivity(intent);
+                boolean myLists = false;
+                nextView(EventsActivity.class);
             }
         });
 
-        myEvents.setOnClickListener(new View.OnClickListener() {
+        myLists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(activity, EventsActivity.class);
-                startActivity(intent);
+                boolean myLists = true;
+                nextView(EventListsActivity.class);
             }
         });
+    }
+
+    private void nextView(Class nextActivity){
+        intent = new Intent(activity, nextActivity);
+        intent.putExtra("pessoa", pessoa);
+        intent.putExtra("boolean",myLists);
+        startActivity(intent);
     }
 }

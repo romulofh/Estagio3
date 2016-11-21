@@ -18,11 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignInActivity" />
-        <activity android:name=".HelloActivity" />
         <activity android:name=".EventsActivity" />
         <activity android:name=".StatusActivity" />
-        <activity android:name=".MyEventsDetailsActivity" />
-        <activity android:name=".EventsDetailsActivity"></activity>
+        <activity android:name=".MyListDetailsActivity" />
+        <activity android:name=".EventsDetailsActivity" />
+        <activity android:name=".EventListsActivity" />
+        <activity android:name=".ListDetailsActivity" />
     </application>
 
 </manifest>
